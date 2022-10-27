@@ -13,34 +13,12 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 from PIL import Image
 from collections import OrderedDict
-
+from tqdm import tqdm
+import DogBreedDataset
+from Config import Config
 # Import data set
-dataset = ImageFolder('../SDDsubset')
 
-breeds = []
 
-def rename(name):
-    return ' '.join(' '.join(name.split('-')[1:]).split('_'))
-
-for n in dataset.classes:
-    breeds.append(rename(n))
-
-test_pct = 0.3
-test_size = int(len(dataset)*test_pct)
-dataset_size = len(dataset) - test_size
-
-val_pct = 0.1
-val_size = int(dataset_size*val_pct)
-train_size = dataset_size - val_size
-
-train_ds, val_ds, test_ds = random_split(dataset, [train_size, val_size, test_size])
-
-batch_size =64
-
-# Create DataLoaders
-train_dl = DataLoader(train_ds, batch_size, shuffle=True, num_workers=2, pin_memory=True)
-val_dl = DataLoader(val_ds, batch_size*2, num_workers=2, pin_memory=True)
-test_dl = DataLoader(test_ds, batch_size*2, num_workers=2, pin_memory=True)
 
 
 def get_lr(optimizer):
@@ -100,4 +78,3 @@ def evaluate(model, val_loader):
     model.eval()
     outputs = [model.validation_step(batch) for batch in val_loader]
     return model.validation_epoch_end(outputs)
-

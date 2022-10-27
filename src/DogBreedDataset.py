@@ -12,6 +12,7 @@ from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
 import torchvision.models as models
 from PIL import Image
+from tqdm import tqdm
 from collections import OrderedDict
 
 class DogBreedDataset(Dataset):
